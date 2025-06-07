@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Basic -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Site Metas -->
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+
+  <title>YouTube Summarization </title>
+  <link rel="icon" href="static/images/1.png" type="image/icon type">
+
+  <!-- slider stylesheet -->
+  <link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.1.3/assets/owl.carousel.min.css" />
+
+  <!-- bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="static/css/bootstrap.css" />
+
+  <!-- fonts style -->
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet" />
+  <!-- Custom styles for this template -->
+  <link href="static/css/style.css" rel="stylesheet" />
+  <!-- responsive style -->
+  <link href="static/css/responsive.css" rel="stylesheet" />
+  <script>
+    function togglePercentageInput() {
+        var method = document.getElementById('method').value;
+        var percentageDiv = document.getElementById('percentageDiv');
+        if (method == 'extractive') {
+            percentageDiv.style.display = 'block';
+        } else {
+            percentageDiv.style.display = 'none';
+        }
+    }
+</script>
+</head>
+
+<body>
+  <div class="hero_area">
+    <!-- header section strats -->
+    <header class="header_section">
+      <div class="container">
+        <nav class="navbar navbar-expand-lg custom_nav-container pt-3">
+          <a class="navbar-brand" href="{{url_for('userhome')}}">
+            <img src="static/images/1.png" alt="" style="width: 200px;" /><span>
+              
+            </span>
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="d-flex ml-auto flex-column flex-lg-row align-items-center">
+              <ul class="navbar-nav  ">
+                <li class="nav-item active">
+                  <a class="nav-link" href="{{url_for('userhome')}}">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{{url_for('summary')}}">Summary in Native Language</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{{url_for('summary2')}}">Summary in English</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{{url_for('play')}}"> Video Cut </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{{url_for('login')}}">LogOut</a>
+                </li>
+              </ul>
+             
+            </div>
+            
+          </div>
+        </nav>
+      </div>
+    </header>
+    <!-- end header section -->
+    <!-- slider section -->
+    <section class=" slider_section position-relative">
+      <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <div class="slider_item-box">
+              <div class="slider_item-container">
+                <div class="container">
+                  
+                    <body>
+                        <form method="POST" action="/summary">
+                            <label for="url">YouTube URL:</label>
+                            <input type="url" name="url" required><br>
+
+                            <label for="method">Summarization Method:</label>
+                            <select name="method" id="method" onchange="togglePercentageInput()">
+                                <option value="extractive">Extractive</option>
+                                <!-- <option value="abstractive">Abstractive</option> -->
+                            </select><br>
+
+                            <div id="percentageDiv" style="display:block;">
+                                <label for="percentage">Percentage (for Extractive Summarization):</label>
+                                <input type="number" name="percentage" min="1" max="100" required>
+                            </div><br>
+
+                            <input class="btn btn-primary" type="submit" value="Generate Summary">
+
+                            <label for="language">Select Language for Translation:</label>
+                            <select name="language" id="language" required>
+                              <option value="hi">Hindi</option>
+                              <option value="bn">Bengali</option>
+                              <option value="ta">Tamil</option>
+                              <option value="te">Telugu</option>
+                              <option value="mr">Marathi</option>
+                              <option value="gu">Gujarati</option>
+                              <option value="kn">Kannada</option>
+                              <option value="ml">Malayalam</option>
+                            </select><br>
+                          
+                            <!-- <input class="btn btn-primary" type="submit" value="Generate Summary"> -->
+                          </form>
+                        </form><br><br>
+                        
+                        {% if summary %}
+    <div style="border: 1px solid black; padding: 10px; margin: 10px; text-align: justify;">
+        <h2 style="margin-bottom: 10px;">Summary:</h2>
+        <p>{{ summary }}</p>
+        <h4>Word Count:</h4>
+        <p>{{ word_count }}</p>
+        <h2>Translated Summary</h2>
+        <p>{{ trans_summary }}</p>
+        <h4>Word count for translated summary: {{translted_summary_word_count}}</h4>
+        <h2>Pronunciation</h2>
+        <p>{{ pronunciation }}</p>
+    </div>
+    <br><br><br><br><br><br>
+
+    <div style="border: 1px solid black; padding: 10px; margin: 10px; text-align: justify;">
+        <h2 style="margin-bottom: 10px;">Transcripted Text:</h2>
+        <p>{{ transcript }}</p>
+    </div>
+{% endif %}
+
+
+
+                    </body>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          
+               
+          </div>
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- end slider section -->
+  </div>
+
+
+  <!-- map section -->
+  <!-- <section class="map_section">
+    <div id="map" class="h-100 w-100 ">
+    </div>
+  </section> -->
+
+  <!-- end map section -->
+
+  
+
+
+
+  <!-- footer section -->
+  <section class="container-fluid footer_section">
+    <p>
+      <!-- Copyright &copy; 2022 All Rights Reserved By -->
+      <!-- <a href="https://balaram42.blogspot.com/">Balaram Panigrahy</a> -->
+    </p>
+  </section>
+  <!-- footer section -->
+
+  <script type="text/javascript" src="static/js/jquery-3.4.1.min.js"></script>
+  <script type="text/javascript" src="static/js/bootstrap.js"></script>
+
+  
+  <!-- end google map js -->
+</body>
+
+</html>
